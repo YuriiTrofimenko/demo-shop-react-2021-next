@@ -1,9 +1,12 @@
-// import React from 'react';
+// import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/App'
+import {store, StoreContext} from './stores/Store'
 import './scss/style.scss'
 
 ReactDOM.render(
-    <App />,
+  <StoreContext.Provider value={store}>
+     <App />
+  </StoreContext.Provider>,
   document.getElementById('root')
 )
