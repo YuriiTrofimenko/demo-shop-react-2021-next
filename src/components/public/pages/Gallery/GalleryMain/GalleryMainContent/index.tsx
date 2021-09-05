@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react'
 import { useEffect } from 'react'
 import { useStore } from '../../../../../../stores/Store'
+import ProductGridItem from './ProductGridItem'
 const GalleryMainContent: React.FC =
   observer(() => {
     const {productStore} = useStore()
@@ -13,7 +14,7 @@ const GalleryMainContent: React.FC =
         <div id="products-list">
           {
             productStore.products.map(
-              product => <div key={product.id}>{product.name}</div>
+              product => <ProductGridItem key={product.id} product={product}/>
             )
           }
         </div>

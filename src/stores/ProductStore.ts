@@ -25,21 +25,13 @@ class ProductStore {
     // TODO replace file data source with remote one
     // const response = await fetch(this.DATA_SOURCE_ADDRESS)
     // const products: Product[] = await response.json()
-    console.log('allProducts store', allProducts)
     this.sourceProductsTotalCount = allProducts.length
-    console.log('sourceProductsTotalCount store', this.sourceProductsTotalCount)
     const prevCount = this.products.length
-    console.log('prevCount store', prevCount)
-    console.log('this.nextProductIndex store', this.nextProductIndex)
-    console.log('this.nextProductIndex + this.FETCH_STEP store', this.nextProductIndex + this.FETCH_STEP)
     const fetchedProducts =
       allProducts.slice(this.nextProductIndex, this.nextProductIndex + this.FETCH_STEP)
-    console.log('fetchedProducts', fetchedProducts)
     this.addProducts(fetchedProducts)
-    console.log('prods store', this.products)
     const currentCount = this.products.length
     this.nextProductIndex = currentCount
-    console.log('prods store', this.products)
     return currentCount - prevCount
   }
   async clear() {
