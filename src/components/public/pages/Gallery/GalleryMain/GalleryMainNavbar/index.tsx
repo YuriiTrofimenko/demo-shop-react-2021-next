@@ -1,10 +1,12 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const navbar: React.FC = () => (
   <div className="navigation-bar__top">
     <div className="sort-by">
       <span>Sort by:</span>
       <div className="sort-by__price" id="sort-by-price" data-filter="price">
         Price
-        <div id="by-price-chevron" className="fas fa-chevron-down"></div>
+        {/* <div id="by-price-chevron" className="fas fa-chevron-down"></div> */}
+        <FontAwesomeIcon id='by-price-chevron' icon={['fas', 'chevron-down']} />
       </div>
 
       <div
@@ -13,8 +15,8 @@ const navbar: React.FC = () => (
         data-filter="rating"
       >
         Rating
-
-        <div id="by-rating-chevron" className="fas fa-chevron-down"></div>
+        {/* <div id="by-rating-chevron" className="fas fa-chevron-down"></div> */}
+        <FontAwesomeIcon id='by-rating-chevron' icon={['fas', 'chevron-down']} />
       </div>
       <div className="sort-by--reset-all">Reset all filters</div>
     </div>
