@@ -9,6 +9,9 @@ const GalleryMainContent: React.FC =
       productStore.fetchMore()
       return () => {productStore.clear()}
     }, [])
+    const handleMoreButton = () => {
+      productStore.fetchMore()
+    }
     return (
       <>
         <div id="products-list">
@@ -18,14 +21,14 @@ const GalleryMainContent: React.FC =
             )
           }
         </div>
-        <div className="load-more" id="load-more">
-          <span>Load another 20 items</span>
-          {
+        {
             (productStore.itemsLeftCount > 0)
-              ? <div className="load-more__items-left">({productStore.itemsLeftCount} items left)</div>
-              : ''
-          }
-        </div>
+            ? <div className="load-more" id="load-more" onClick={handleMoreButton}>
+                <span>Load another 20 items</span>
+                <div className="load-more__items-left">({productStore.itemsLeftCount} items left)</div>
+              </div>
+            : ''
+        }
       </>
     )
   })
