@@ -6,7 +6,29 @@ const GalleryMainContent: React.FC =
   observer(() => {
     const {productStore} = useStore()
     useEffect(() => {
-      productStore.fetchMore()
+      console.log(productStore.allowFetchProducts)
+      if (productStore.allowFetchProducts) {
+        productStore.allowFetchProducts = false
+        const windowUrl = window.location.search
+        const params = new URLSearchParams(windowUrl)
+        console.log(params.get('orderBy'), params.get('sortingDirection'))
+        const orderBy = params.get('orderBy') || 'id'
+        const sortingDirection = params.get('sortingDirection') || 'DESC'
+        if (orderBy !== productStore.prevFilter.orderBy
+            || sortingDirection !== productStore.prevFilter.sortingDirection
+        ) {
+          productStore.prevFilter.orderBy = orderBy
+          productStore.prevFilter.sortingDirection = sortingDirection
+          if (orderBy) {
+            productStore.filter.orderBy = orderBy
+          }
+          if (sortingDirection) {
+            productStore.filter.sortingDirection = sortingDirection
+          }
+          productStore.clear()
+          productStore.fetchMore()
+        }
+      }
       return () => {productStore.clear()}
     }, [])
     const handleMoreButton = () => {

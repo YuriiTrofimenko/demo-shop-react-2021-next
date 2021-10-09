@@ -6,15 +6,17 @@ export default class Product {
     public name: string,
     public color: string,
     public brand: string,
-    public rating: string | number,
-    public price:  string | number,
+    public rating: number | string,
+    public price:  number | string,
     public soldOut: boolean,
     public isLike: boolean
   ) {
     if (typeof price === 'string') {
+      price = price.replace(',', '.')
       this.price = Number(price)
     }
     if (typeof rating === 'string') {
+      rating = rating.replace(',', '.')
       this.rating = Number(rating)
     }
   }
