@@ -1,14 +1,13 @@
 import { makeAutoObservable } from 'mobx'
 import Product from '../models/Product'
 import allProducts from '../json/shoes.json'
+import history from '../history'
 interface IProductFilter {
   orderBy: string,
   sortingDirection: string
 }
-// import { deepClone } from '../utils/CloneMaker'
 class ProductStore {
   // constants
-  // readonly DATA_SOURCE_ADDRESS = '../'
   readonly FETCH_STEP = 20
   readonly INITIAL_NEXT_PRODUCT_INDEX = 0
   // private properties
@@ -33,6 +32,14 @@ class ProductStore {
   private addProducts(products: Product[]) {
     this.products.push(...products)
   }
+  private changeGalleryUrlParams () {
+    history.push({
+      pathname: '/',
+      search: `?orderBy=${this.filter.orderBy}
+                &sortingDirection=${this.filter.sortingDirection}`
+              .replace(/\s/g, '')
+    })
+  }
   // actions
   async fetchMore() {
     // TODO replace file data source with remote one
@@ -44,25 +51,22 @@ class ProductStore {
       allProducts
         .sort((p1, p2) => {
           const property = this.filter.orderBy as keyof Product
-          console.log(typeof p1[property], p1[property])
           const v1 : number =
             (typeof p1[property] !== 'number')
               ? Number((p1[property] as string).replace(',','.'))
               : p1[property] as number
-            const v2 =
-              (typeof p2[property] !== 'number')
-                ? Number((p2[property] as string).replace(',','.'))
-                : p2[property] as number
+          const v2 =
+            (typeof p2[property] !== 'number')
+              ? Number((p2[property] as string).replace(',','.'))
+              : p2[property] as number
           if (this.filter.sortingDirection === 'ASC') {
-            console.log(v1, v2, v1 - v2)
             return v1 - v2
           } else if (this.filter.sortingDirection === 'DESC') {
             return v2 - v1
           } else {
             return p2.id - p1.id
           }
-        })
-        .slice(this.nextProductIndex, this.nextProductIndex + this.FETCH_STEP)
+        }).slice(this.nextProductIndex, this.nextProductIndex + this.FETCH_STEP)
     this.addProducts(fetchedProducts)
     this.allowFetchProducts = true
     const currentCount = this.products.length
@@ -73,9 +77,28 @@ class ProductStore {
     this.products.length = 0
     this.nextProductIndex = this.INITIAL_NEXT_PRODUCT_INDEX
   }
+  toggleFilterSortingDirection () {
+    if (this.filter.sortingDirection === 'DESC') {
+      this.filter.sortingDirection = 'ASC'
+    } else {
+      this.filter.sortingDirection = 'DESC'
+    }
+    this.changeGalleryUrlParams()
+  }
+  // setters
+  set filterOrderBy (orderBy: string) {
+    this.filter.orderBy = orderBy
+    this.changeGalleryUrlParams()
+  }
   // getters
   get itemsLeftCount() {
     return this.sourceProductsTotalCount - this.products.length
+  }
+  get filterOrderBy () {
+    return this.filter.orderBy
+  }
+  get filterSortingDirection () {
+    return this.filter.sortingDirection
   }
 }
 export { ProductStore } 
