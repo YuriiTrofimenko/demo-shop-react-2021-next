@@ -1,17 +1,17 @@
 import { observer } from 'mobx-react'
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useStore } from '../../../../../../stores/Store'
 import ProductGridItem from './ProductGridItem'
 const GalleryMainContent: React.FC =
   observer(() => {
     const {productStore} = useStore()
+    const location = useLocation()
     useEffect(() => {
-      console.log(productStore.allowFetchProducts)
       if (productStore.allowFetchProducts) {
         productStore.allowFetchProducts = false
         const windowUrl = window.location.search
         const params = new URLSearchParams(windowUrl)
-        console.log(params.get('orderBy'), params.get('sortingDirection'))
         const orderBy = params.get('orderBy') || 'id'
         const sortingDirection = params.get('sortingDirection') || 'DESC'
         if (orderBy !== productStore.prevFilter.orderBy
@@ -30,7 +30,7 @@ const GalleryMainContent: React.FC =
         }
       }
       return () => {productStore.clear()}
-    }, [])
+    }, [location, productStore])
     const handleMoreButton = () => {
       productStore.fetchMore()
     }

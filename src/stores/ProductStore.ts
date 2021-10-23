@@ -34,7 +34,7 @@ class ProductStore {
   }
   private changeGalleryUrlParams () {
     history.push({
-      pathname: '/',
+      pathname: '/gallery',
       search: `?orderBy=${this.filter.orderBy}
                 &sortingDirection=${this.filter.sortingDirection}`
               .replace(/\s/g, '')
@@ -77,17 +77,18 @@ class ProductStore {
     this.products.length = 0
     this.nextProductIndex = this.INITIAL_NEXT_PRODUCT_INDEX
   }
-  toggleFilterSortingDirection () {
-    if (this.filter.sortingDirection === 'DESC') {
-      this.filter.sortingDirection = 'ASC'
-    } else {
-      this.filter.sortingDirection = 'DESC'
-    }
-    this.changeGalleryUrlParams()
-  }
   // setters
   set filterOrderBy (orderBy: string) {
-    this.filter.orderBy = orderBy
+    if (this.filter.orderBy === orderBy) {
+      if (this.filter.sortingDirection === 'DESC') {
+        this.filter.sortingDirection = 'ASC'
+      } else {
+        this.filter.sortingDirection = 'DESC'
+      }
+    } else {
+      this.filter.sortingDirection = 'ASC'
+      this.filter.orderBy = orderBy
+    }
     this.changeGalleryUrlParams()
   }
   // getters

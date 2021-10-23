@@ -2,6 +2,9 @@ import { observer } from 'mobx-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useStore } from '../../../../stores/Store'
 import logo from '../../../../assets/logo/logo.svg'
+import routes from '../../../../routes'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 const header: React.FC = observer(() => {
   const {productStore} = useStore()
   const mainTittle = (
@@ -18,10 +21,16 @@ const header: React.FC = observer(() => {
             <FontAwesomeIcon icon={['fas', 'times']} />
           </div>
           <ul className="burger-menu__items">
-            <li><a href="#">Main</a></li>
-            <li><a href="#">Gallery</a></li>
-            <li><a href="#">News</a></li>
-            <li><a href="#">Profile</a></li>
+            {routes.map(route => (
+                <NavLink
+                    key={route.path}
+                    to={route.path}
+                    activeClassName="active"
+                    exact
+                >
+                    {route.name}
+                </NavLink>
+            ))}
           </ul>
         </div>
         <div className="header__content">
@@ -37,12 +46,16 @@ const header: React.FC = observer(() => {
           </div>
           <nav>
             <ul className="header__menu">
-              <li>
-                <a href="#">Main</a>
-              </li>
-              <li><a href="#">Gallery</a></li>
-              <li><a href="#">News</a></li>
-              <li><a href="#">Profile</a></li>
+              {routes.map(route => (
+                <NavLink
+                    key={route.path}
+                    to={route.path}
+                    activeClassName="active"
+                    exact
+                >
+                    {route.name}
+                </NavLink>
+              ))}
             </ul>
           </nav>
 

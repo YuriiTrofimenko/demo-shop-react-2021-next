@@ -6,13 +6,11 @@ const Navbar: React.FC = observer(() => {
   const { productStore } = useStore()
   const handleOrderButtonClick = (orderBy: string) => {
     productStore.filterOrderBy = orderBy
-    productStore.toggleFilterSortingDirection()
-    // this.setState({ activeOrderButton: buttonName })
   }
   const orderPriceChevronClass =
-    `chevron-${(productStore.filterOrderBy === 'price' && productStore.filterSortingDirection === 'DESC') ? 'up' : 'down'}` as IconName
+    `chevron-${(productStore.filterOrderBy === 'price' && productStore.filterSortingDirection === 'DESC') || productStore.filterOrderBy !== 'price' ? 'down' : 'up'}` as IconName
   const orderRatingChevronClass =
-    `chevron-${(productStore.filterOrderBy === 'rating' && productStore.filterSortingDirection === 'DESC') ? 'up' : 'down'}` as IconName
+    `chevron-${(productStore.filterOrderBy === 'rating' && productStore.filterSortingDirection === 'DESC') || productStore.filterOrderBy !== 'rating' ? 'down' : 'up'}` as IconName
   return (
     <div className="navigation-bar__top">
       <div className="sort-by">
