@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface IProps {
@@ -8,6 +8,7 @@ interface IProps {
 const BackOnTop: React.FC<IProps> = props =>
   {
     const [visibilityStyle, setVisibilityStyle] = useState('')
+    const anchorRef = useRef<null | HTMLDivElement>(null)
     useEffect(() => {
       window.addEventListener('scroll', handleScroll)
       return () => window.removeEventListener('scroll', handleScroll)
@@ -19,15 +20,18 @@ const BackOnTop: React.FC<IProps> = props =>
         setVisibilityStyle('')
       }
     }
+    const handleClick = () => {
+      if (anchorRef && anchorRef.current) {
+        anchorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
     return (
       <>
-        <div id="back-on-top"></div>
-          {props.children}
-        <a href="#back-on-top">
-          <div className={['to-top', visibilityStyle].join(' ')}>
-            <FontAwesomeIcon icon={['fas', 'chevron-up']} />
-          </div>
-        </a>
+        <div id="back-on-top" ref={anchorRef}></div>
+        {props.children}
+        <div className={['to-top', visibilityStyle].join(' ')} onClick={handleClick}>
+          <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+        </div>
       </>
   )}
 
